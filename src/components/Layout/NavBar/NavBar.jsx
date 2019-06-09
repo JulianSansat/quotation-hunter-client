@@ -64,6 +64,7 @@ class NavBar extends Component {
             <div>
               <p className="heading">{currency}</p>
               <p className="title price">
+                R$
                 {formatCurrency(quotations[currency].quotations.buy)}
               </p>
               <p className="variation">
