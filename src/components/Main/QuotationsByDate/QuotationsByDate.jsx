@@ -16,7 +16,10 @@ class NavBar extends Component {
       lastMonthSelected: "",
       lastWeekSelected: "",
       lastDaySelected: "is-info is-active",
-      chartData: {}
+      currencies: ["USD", "EUR"],
+      criptos: ["BTC"],
+      currenciesChartData: {},
+      cryptoChartData: {}
     };
   }
 
@@ -30,6 +33,7 @@ class NavBar extends Component {
         if (res.status === 200) {
           const { quotations } = res.data;
           const datasets = [];
+          const criptoDataSets = [];
           let labels = [];
           let data = [];
           let chartItem = [];
@@ -52,8 +56,11 @@ class NavBar extends Component {
               color1 = colors[currency][0];
               color2 = colors[currency][1];
             }
+            const label = `${currency} ${formatPercent(
+              quotations[currency].variation
+            )}%`;
             chartItem = {
-              label: currency,
+              label,
               fill: false,
               lineTension: 0.1,
               backgroundColor: color1,
@@ -73,13 +80,19 @@ class NavBar extends Component {
               pointHitRadius: 10,
               data
             };
-            datasets.push(chartItem);
+            if (this.state.currencies.includes(currency)) {
+              datasets.push(chartItem);
+            }
+            if (this.state.criptos.includes(currency)) {
+              criptoDataSets.push(chartItem);
+            }
             data = [];
           });
-          const chartData = { labels, datasets };
-          // this.setState({[e.target.name]: e.target.value});
+          const currenciesChartData = { labels, datasets };
+          const cryptoChartData = { labels, datasets: criptoDataSets };
           this.setState({
-            chartData,
+            currenciesChartData,
+            cryptoChartData,
             loading: false
           });
         }
@@ -120,9 +133,9 @@ class NavBar extends Component {
       lastMonthSelected,
       lastWeekSelected,
       lastDaySelected,
-      chartData
+      currenciesChartData,
+      cryptoChartData
     } = this.state;
-
     if (loading === true) {
       return <p>Loading...</p>;
     }
@@ -151,7 +164,10 @@ class NavBar extends Component {
           </div>
         </div>
         <div>
-          <Line data={chartData} width={400} />
+          <Line data={currenciesChartData} width={400} />
+        </div>
+        <div>
+          <Line data={cryptoChartData} width={400} />
         </div>
       </div>
     );

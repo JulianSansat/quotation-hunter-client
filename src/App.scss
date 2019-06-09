@@ -1,4 +1,13 @@
+$family-primary: "Ubuntu";
 @import "bulma/sass/utilities/initial-variables.sass";
 @import "bulma/sass/utilities/functions.sass";
 @import "bulma/sass/utilities/derived-variables.sass";
 @import "~bulma";
+
+.fa-caret-up {
+  color: green;
+}
+
+.fa-caret-down {
+  color: red;
+}

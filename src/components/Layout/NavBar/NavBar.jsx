@@ -56,14 +56,22 @@ class NavBar extends Component {
     }
     return (
       <nav className="level is-mobile nav-header">
+        <div className="navbar-brand">
+          <p className="brand-title title is-4">Últimas cotações</p>
+        </div>
         {Object.keys(quotations).map(currency => (
           <div key={currency} className="level-item has-text-centered">
             <div>
               <p className="heading">{currency}</p>
-              <p className="title">
+              <p className="title price">
                 {formatCurrency(quotations[currency].quotations.buy)}
               </p>
-              <p>
+              <p className="variation">
+                {quotations[currency].symbol === "+" ? (
+                  <i className="fa fa-caret-up" aria-hidden="true" />
+                ) : (
+                  <i className="fa fa-caret-down" aria-hidden="true" />
+                )}
                 {formatPercent(quotations[currency].variation)}
 %
               </p>

@@ -1,3 +1,20 @@
 .nav-header {
-  border: 1px solid blue;
+  background-color: rgba(11, 67, 158, 0.6);
+  padding: 2em;
+  .title {
+    color: #0e3f40 !important;
+  }
+  .variation {
+    font-size: 18px !important;
+  }
+}
+
+.heading {
+  color: #0e3f40 !important;
+  font-size: 20px !important;
+}
+
+.brand-title {
+  margin: auto;
+  margin-left: 2em;
 }
