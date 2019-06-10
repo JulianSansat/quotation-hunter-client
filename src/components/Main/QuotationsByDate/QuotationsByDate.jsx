@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Line } from "react-chartjs-2";
-import { moment as TimeFormat } from "moment";
+import moment from "moment";
 import Api from "../../../services/api";
 import { formatCurrency, formatPercent } from "../../../util/CurrencyFormat";
 import "moment/locale/pt-br";
@@ -27,8 +27,8 @@ class NavBar extends Component {
     this.loadQuotations("yesterday");
   }
 
-  loadQuotations = moment => {
-    Api.get(`/quotations`, { params: { moment } })
+  loadQuotations = momentTime => {
+    Api.get(`/quotations`, { params: { moment: momentTime } })
       .then(res => {
         if (res.status === 200) {
           const { quotations } = res.data;
@@ -48,7 +48,7 @@ class NavBar extends Component {
             labels = [];
             quotations[currency].quotations.map(quotation => {
               data.push(quotation.buy / 1000000);
-              labels.push(quotation.created_at);
+              labels.push(moment(quotation.created_at).format("LLL"));
             });
             let color1 = "rgba(75,192,192,0.4)";
             let color2 = "rgba(75,192,192,1)";
@@ -105,17 +105,17 @@ class NavBar extends Component {
       });
   };
 
-  selectMoment = moment => {
+  selectMoment = momentTime => {
     let lastMonthSelected = "";
     let lastWeekSelected = "";
     let lastDaySelected = "";
-    if (moment === "yesterday") {
+    if (momentTime === "yesterday") {
       lastDaySelected = "is-info is-active";
     }
-    if (moment === "last_week") {
+    if (momentTime === "last_week") {
       lastWeekSelected = "is-info is-active";
     }
-    if (moment === "last_month") {
+    if (momentTime === "last_month") {
       lastMonthSelected = "is-info is-active";
     }
     this.setState({
@@ -123,7 +123,7 @@ class NavBar extends Component {
       lastWeekSelected,
       lastMonthSelected
     });
-    this.loadQuotations(moment);
+    this.loadQuotations(momentTime);
   };
 
   render() {
@@ -140,9 +140,9 @@ class NavBar extends Component {
       return <p>Loading...</p>;
     }
     return (
-      <div className="section">
-        <div className="buttons has-addons">
-          <div style={{ margin: "auto" }}>
+      <section className="section">
+        <div className="container">
+          <div className="buttons has-addons is-centered">
             <span
               className={`button ${lastMonthSelected}`}
               onClick={() => this.selectMoment("last_month")}
@@ -162,14 +162,14 @@ class NavBar extends Component {
               Ontem
             </span>
           </div>
+          <div>
+            <Line data={currenciesChartData} maintainAspectRatio={false} />
+          </div>
+          <div>
+            <Line data={cryptoChartData} />
+          </div>
         </div>
-        <div>
-          <Line data={currenciesChartData} width={400} />
-        </div>
-        <div>
-          <Line data={cryptoChartData} width={400} />
-        </div>
-      </div>
+      </section>
     );
   }
 }

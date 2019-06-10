@@ -33,29 +33,11 @@ class NavBar extends Component {
 
   render() {
     const { quotations, loading } = this.state;
-    document.addEventListener("DOMContentLoaded", () => {
-      // Get all "navbar-burger" elements
-      const $navbarBurgers = Array.prototype.slice.call(
-        document.querySelectorAll(".navbar-burger"),
-        0
-      );
-
-      if ($navbarBurgers.length > 0) {
-        $navbarBurgers.forEach(el => {
-          el.addEventListener("click", () => {
-            const { target } = el.dataset;
-            const $target = document.getElementById(target);
-            el.classList.toggle("is-active");
-            $target.classList.toggle("is-active");
-          });
-        });
-      }
-    });
     if (loading === true) {
       return <p>Loading...</p>;
     }
     return (
-      <nav className="level is-mobile nav-header">
+      <nav className="level nav-header">
         <div className="navbar-brand">
           <p className="brand-title title is-4">Últimas cotações</p>
         </div>
